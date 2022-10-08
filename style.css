@@ -1,0 +1,62 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+.turn {
+    margin-left: 40%;
+    width: 20%;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+}
+
+.board {
+    width: 30vw;
+    height: 30vw;
+    margin-left: 35vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.board div {
+    height: 10vw;
+    width: 10vw;
+    text-align: center;
+}
+
+.board div button {
+    padding: 45%;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.TopCenter {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.RightCenter {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.BottomCenter {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.LeftCenter {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.Center {
+    border: 1px solid black;
+}
