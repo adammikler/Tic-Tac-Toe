@@ -1,50 +1,39 @@
 let board = Array.apply(null, Array(9)); /*Creates the Array to store moves*/
 
-/*Creates the player objects with there abilites*/
-const Player = (piece, turn) => {
-    /*updates the current player and highlights whos move it is*/
-    const updateTurn = (piece) => {
-        if (piece.turn == 1) {
+const state = {
+    currentPlayer: 'x',
+}
+const buttons = document.querySelector('.board');
 
-           piece.turn = 0;
-
-           const active = document.querySelector('.active');
-           const notActive = document.querySelector('.not-active');
-
-           active.classList.replace('active', 'not-active');
-           notActive.classList.replace('not-active', 'active');
-        } else {
-            piece.turn = 1;
-        };
+const makeMove = (currentPlayer, move) => {
+    if (currentPlayer == 'x') {
+        board[move] = 1;
+    } else {
+        board[move] = -1;
     };
-    /*Takes in themove and updates it with a 1 for X or -1 for O*/
-    const makeMove = (move) => {
-        if (piece == 'x') {
-            board[move] = 1;
-        } else {
-            board[move] = -1;
-        };
-    };
-    return {piece, turn, updateTurn, makeMove};/*Object created*/
 };
 
-function playMove(x, o, i) {
-    button = document.getElementById(i);
-    if (x.turn == 1) {
-        x.makeMove(i)
-        x.updateTurn(x);
-        o.updateTurn(o);
+const updateTurn = (currentPlayer, grid) => {
+    const active = document.querySelector('.active');
+    const notActive = document.querySelector('.not-active');
+    const button = document.getElementById(grid);
+
+    if (currentPlayer === 'x') {
+        active.classList.replace('active', 'not-active');
+        notActive.classList.replace('not-active', 'active');
+        state.currentPlayer = 'o';
+        // makeMove(grid);
+        checkWin();
         button.innerHTML = "X";
-        checkWin();
-        console.log(board);
     } else {
-        o.makeMove(i);
-        x.updateTurn(x);
-        o.updateTurn(o);
+        active.classList.replace('active', 'not-active');
+        notActive.classList.replace('not-active', 'active');
+        state.currentPlayer = 'x';
+        
         checkWin();
-        console.log(board);
         button.innerHTML = "O";
-    }; 
+
+    };
 };
 
 function checkWin() {
@@ -53,7 +42,6 @@ function checkWin() {
     owin = -3;
     /*checks for row wins*/
     for (let i = 0; i < 9; i+=3) {
-        console.log(i);
         if(board[0 + i] + board [1 + i] + board[2 + i] == xwin) {
             displayWinner('X wins');
             clearBoard();
@@ -91,28 +79,27 @@ function checkWin() {
 function displayWinner(winner) {
     document.getElementById('winner').innerText = winner;
 }
+
 /*Clears the board and array*/
 function clearBoard() {
     let button = document.getElementById(0);
-    for (let i = 0; i < 9; i++) {
-        button = document.getElementById(i);
+    board.forEach((item, index) => {
+        button = document.getElementById(index);
         button.innerHTML = '';
-    };
-    board.length = 0;
+    });
     board = Array.apply(null, Array(9));
 }
 
 function Game() {
-    const x = Player('x', 1);/*Creates both players */
-    const o = Player('o', 0);
-
     let button = document.getElementById(0);
-    for (let i = 0; i < 9; i++) {
-        button = document.getElementById(i);
+
+    board.forEach((item, index) => {
+        button = document.getElementById(index);
         button.addEventListener('click', () => {
-            playMove(x, o, i);
+            makeMove(state.currentPlayer, index);
+            updateTurn(state.currentPlayer, index);
         }); 
-    };
+    });
 };
 
 Game();
