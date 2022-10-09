@@ -16,21 +16,32 @@ h2 {
     font-size: 2em;
 }
 
+.active {
+    border: 1px solid black;
+}
+
 .turn {
-    margin-left: 40%;
-    width: 20%;
+    margin-left: 30%;
+    width: 40%;
     justify-content: space-between;
     display: flex;
     flex-direction: row;
 }
-
+.turn h2 {
+    padding: 5%;
+}
+.winner {
+    margin-top: 0;
+    width: 100%;
+    text-align: center;
+}
 .board {
     width: 30vw;
     height: 30vw;
     margin-left: 35vw;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
 }
 
 .board div {
@@ -40,12 +51,13 @@ h2 {
 }
 
 .board div button {
-    padding: 40%;
+    padding: 45%;
     border: none;
     background-color: white;
     cursor: pointer;
 }
 
+/*Creates the board with boarders*/
 .TopCenter {
     border-left: 1px solid black;
     border-right: 1px solid black;
@@ -68,8 +80,4 @@ h2 {
 
 .Center {
     border: 1px solid black;
-}
-
-.button {
-    font-size: 2em;
 }
