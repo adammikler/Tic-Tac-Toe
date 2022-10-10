@@ -10,10 +10,10 @@ const Board = () => {
         for (let i = 0; i < 9; i+=3) {
             if(board[0 + i] + board [1 + i] + board[2 + i] == xwin) {
                 displayWinner('X wins');
-                clearBoard();
+                delay(1000).then(() => clearBoard());
             } else if (board[0 + i] + board [1 + i] + board[2 + i] == owin) {
                 displayWinner('O wins');
-                clearBoard();
+                delay(1000).then(() => clearBoard());
             };
         };
 
@@ -21,26 +21,26 @@ const Board = () => {
         for (let i = 0; i < 3; i++) {
             if(board[0 + i] + board [3 + i] + board[6 + i] == xwin) {
                 displayWinner('X wins');
-                clearBoard();
+                delay(1000).then(() => clearBoard());
             } else if (board[0 + i] + board [3 + i] + board[6 + i] == owin) {
                 displayWinner('O wins');
-                clearBoard();
+                delay(1000).then(() => clearBoard());
             };
         };
 
         /*checks for diagonal wins*/
         if (board[0] + board[4 ] + board[8] == xwin) {
             displayWinner('X wins');
-            clearBoard();
+            delay(1000).then(() => clearBoard());
         } else if (board[0] + board[4 ] + board[8] == owin) {
             displayWinner('O wins');
-            clearBoard();
+            delay(1000).then(() => clearBoard());
         } else if (board[2] + board[4 ] + board[6] == xwin) {
             displayWinner('X wins');
-            clearBoard();
+            delay(1000).then(() => clearBoard());
         } else if (board[2] + board[4 ] + board[6] == owin) {
             displayWinner('O wins');
-            clearBoard();
+            delay(1000).then(() => clearBoard());
         };
     };
 
@@ -49,18 +49,31 @@ const Board = () => {
         document.getElementById('winner').innerText = winner;
     }
 
+    //waits before reseting game after a win
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
     /*Clears the board and array*/
     let clearBoard = () => {
+        //clears winner tag
+        document.getElementById('winner').innerHTML = '';
         let button = document.getElementById(0);
+        //clears ticTacToe grid
         for (let i = 0; i < 9; i++) {
             button = document.getElementById(i);
             button.innerHTML = '';
         };
-        board.length = 0;
-        Game();
-    };
+        //resets the turn highlighter
+        const active = document.querySelector('.active');
+        const notActive = document.querySelector('.not-active');
 
-    return {board, checkWin, displayWinner, clearBoard};
+        active.classList.replace('active', 'not-active');
+        notActive.classList.replace('not-active', 'active');
+        //resets the board
+        board.length = 0;
+    };
+    return {board, checkWin, displayWinner, delay, clearBoard};
 }
 
 /*Creates the player objects with there abilites*/
