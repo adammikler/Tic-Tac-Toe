@@ -50,16 +50,17 @@ function checkWin() {
         displayWinner('O wins');
         delay(1000).then(() => clearBoard());
     };
-    let test = [];
-    for (let i = 0; i < 9; i++) {
-        test.push(i);
-    };
-    if (test.length ==  9) {
-        return 0
-    } else {
-       return null
+    let openSpots = 0;
+    for (let i = 0; i < 3; i++) {
+      if (board[i] == undefined) {
+        openSpots++;
+        };
     }
-    
+    if (openSpots == 0){
+        return 0;
+    } else {
+        return null;
+    }
 };
 
 /*displays who the winner is*/
@@ -127,13 +128,14 @@ function aiBestMove(aiBoard) {
     let depth = 0;
     for (let i = 0; i < 9; i++) {
         if(aiBoard[i] == undefined) {
-            let score = miniMax(aiBoard, depth, true);
+            aiBoard[i] = -1;
+            let score = miniMax(aiBoard, depth, false);
             if (score > BestScore) {
                 BestScore = score;
                 BestMove = [i];
-            }
+            };
         };
-    }
+    };
     document.getElementById(BestMove).innerHTML = "O";
     board[BestMove] = -1
 }
@@ -150,9 +152,9 @@ function miniMax(aiBoard, depth, maximizingPlayer) {
         for (let i = 0; i < 9; i++) {
             if(aiBoard[i] == undefined) {
                 aiBoard[i] = -1;
-                eval = miniMax(aiBoard, depth + 1, false)
-                maxEval = Math.max(maxEval, eval);
+                eval = miniMax(aiBoard, depth + 1, false);
                 aiBoard[i] = undefined;
+                maxEval = Math.max(maxEval, eval);
             }
         }
         return maxEval;
