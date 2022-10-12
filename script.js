@@ -9,9 +9,11 @@ function checkWin() {
     /*checks for row wins*/
     for (let i = 0; i < 9; i+=3) {
         if(board[0 + i] + board [1 + i] + board[2 + i] == xwin) {
+            return 3;
             displayWinner('X wins');
             delay(1000).then(() => clearBoard());
         } else if (board[0 + i] + board [1 + i] + board[2 + i] == owin) {
+            return -3;
             displayWinner('O wins');
             delay(1000).then(() => clearBoard());
         };
@@ -20,9 +22,11 @@ function checkWin() {
     /*checks for collumn wins*/
     for (let i = 0; i < 3; i++) {
         if(board[0 + i] + board [3 + i] + board[6 + i] == xwin) {
+            return 3;
             displayWinner('X wins');
             delay(1000).then(() => clearBoard());
         } else if (board[0 + i] + board [3 + i] + board[6 + i] == owin) {
+            return -3;
             displayWinner('O wins');
             delay(1000).then(() => clearBoard());
         };
@@ -30,24 +34,32 @@ function checkWin() {
 
     /*checks for diagonal wins*/
     if (board[0] + board[4 ] + board[8] == xwin) {
+        return 3;
         displayWinner('X wins');
         delay(1000).then(() => clearBoard());
     } else if (board[0] + board[4 ] + board[8] == owin) {
+        return -3;
         displayWinner('O wins');
         delay(1000).then(() => clearBoard());
     } else if (board[2] + board[4 ] + board[6] == xwin) {
+        return 3;
         displayWinner('X wins');
         delay(1000).then(() => clearBoard());
     } else if (board[2] + board[4 ] + board[6] == owin) {
+        return -3;
         displayWinner('O wins');
         delay(1000).then(() => clearBoard());
     };
-   
-    const tie = board.filter(board => 1);
-    if (tie.length == 0) {
-        console.log('tie')
+    let test = [];
+    for (let i = 0; i < 9; i++) {
+        test.push(i);
+    };
+    if (test.length ==  9) {
+        return 0
+    } else {
+       return null
     }
-    console.log(tie);
+    
 };
 
 /*displays who the winner is*/
@@ -109,76 +121,54 @@ function updateTurn (piece) {
     };
 };
 
+function aiBestMove(aiBoard) {
+    let BestScore = -Infinity;
+    let BestMove;
+    let depth = 0;
+    for (let i = 0; i < 9; i++) {
+        if(aiBoard[i] == undefined) {
+            let score = miniMax(aiBoard, depth, true);
+            if (score > BestScore) {
+                BestScore = score;
+                BestMove = [i];
+            }
+        };
+    }
+    document.getElementById(BestMove).innerHTML = "O";
+    board[BestMove] = -1
+}
 
 function miniMax(aiBoard, depth, maximizingPlayer) {
-    if (depth == 0) {
-        return
-    };
-    if (maximizingPlayer == true) {
+    
+    if (checkWin() !== null) {
+        let score = checkWin();
+        return score;
+    }
+
+    if (maximizingPlayer) {
         let maxEval = -Infinity;
         for (let i = 0; i < 9; i++) {
             if(aiBoard[i] == undefined) {
                 aiBoard[i] = -1;
-                console.log(aiBoard)
-                eval = miniMax(aiBoard, depth - 1, false)
+                eval = miniMax(aiBoard, depth + 1, false)
                 maxEval = Math.max(maxEval, eval);
+                aiBoard[i] = undefined;
             }
         }
         return maxEval;
     } else {
-        console.log('test')
         let minEval = Infinity;
         for (let i = 0; i < 9; i++) {
-            if(aiBoard[i] == 0) {
+            if(aiBoard[i] == undefined) {
                 aiBoard[i] = 1;
-                console.log(aiBoard)
-                eval = miniMax(aiBoard, depth - 1, true)
-                if (aiWin(aiBoard) == 3) {
-                    return Infinity;
-                }
-                minEval = Math.max(minEval, eval)
-            };
+                eval = miniMax(aiBoard, depth + 1, true)
+                minEval = Math.min(minEval, eval);
+                aiBoard[i] = undefined;
+            }
         }
         return minEval;
     }
-} 
-function aiWin(aiBoard) {
-    /*used to measure if a row or collumn combined makes a win*/
-    const xwin = 3;
-    const owin = -3;
-    /*checks for row wins*/
-    for (let i = 0; i < 9; i+=3) {
-        if(aiBoard[0 + i] + aiBoard [1 + i] + aiBoard[2 + i] == xwin) {
-            return(xwin);
-        } else if (aiBoard[0 + i] + aiBoard [1 + i] + aiBoard[2 + i] == owin) {
-            return(owin);
-        };
-    };
-
-    /*checks for collumn wins*/
-    for (let i = 0; i < 3; i++) {
-        if(aiBoard[0 + i] + aiBoard [3 + i] + aiBoard[6 + i] == xwin) {
-            return(xwin);
-        } else if (aiBoard[0 + i] + aiBoard[3 + i] + aiBoard[6 + i] == owin) {
-            return(owin);
-        };
-    };
-
-    /*checks for diagonal wins*/
-    if (aiBoard[0] + aiBoard[4 ] + aiBoard[8] == xwin) {
-        return(xwin);
-    } else if (aiBoard[0] + aiBoard[4 ] + aiBoard[8] == owin) {
-        return(owin);
-    } else if (aiBoard[2] + aiBoard[4 ] + aiBoard[6] == xwin) {
-        return(xwin);
-    } else if (aiBoard[2] + aiBoard[4 ] + aiBoard[6] == owin) {
-        return(owin);
-    };
-};
-
-function aiMove(move) {
-    board[move] = -1;
-    document.getElementById(move).innerHTML = "O";
+    
 }
 
 function playMove(x, i) {
@@ -192,9 +182,7 @@ function playMove(x, i) {
 
 function aiTurn(x) {
     let aiBoard = [...board];
-    let depth = 9;
-    miniMax(aiBoard, depth, true);
-    depth - 1;
+    aiBestMove(aiBoard);
     checkWin();
     updateTurn(x);
 }
