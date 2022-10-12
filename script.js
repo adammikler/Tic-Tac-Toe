@@ -9,11 +9,11 @@ function checkWin() {
     /*checks for row wins*/
     for (let i = 0; i < 9; i+=3) {
         if(board[0 + i] + board [1 + i] + board[2 + i] == xwin) {
-            return 3;
+            return xwin;
             displayWinner('X wins');
             delay(1000).then(() => clearBoard());
         } else if (board[0 + i] + board [1 + i] + board[2 + i] == owin) {
-            return -3;
+            return owin;
             displayWinner('O wins');
             delay(1000).then(() => clearBoard());
         };
@@ -22,11 +22,11 @@ function checkWin() {
     /*checks for collumn wins*/
     for (let i = 0; i < 3; i++) {
         if(board[0 + i] + board [3 + i] + board[6 + i] == xwin) {
-            return 3;
+            return xwin;
             displayWinner('X wins');
             delay(1000).then(() => clearBoard());
         } else if (board[0 + i] + board [3 + i] + board[6 + i] == owin) {
-            return -3;
+            return owin;
             displayWinner('O wins');
             delay(1000).then(() => clearBoard());
         };
@@ -34,33 +34,36 @@ function checkWin() {
 
     /*checks for diagonal wins*/
     if (board[0] + board[4 ] + board[8] == xwin) {
-        return 3;
+        return xwin;
         displayWinner('X wins');
         delay(1000).then(() => clearBoard());
     } else if (board[0] + board[4 ] + board[8] == owin) {
-        return -3;
+        return owin;
         displayWinner('O wins');
         delay(1000).then(() => clearBoard());
     } else if (board[2] + board[4 ] + board[6] == xwin) {
-        return 3;
+        return xwin;
         displayWinner('X wins');
         delay(1000).then(() => clearBoard());
     } else if (board[2] + board[4 ] + board[6] == owin) {
-        return -3;
+        return owin;
         displayWinner('O wins');
         delay(1000).then(() => clearBoard());
     };
     let openSpots = 0;
-    for (let i = 0; i < 3; i++) {
-      if (board[i] == undefined) {
-        openSpots++;
+    for (let i = 0; i < 9; i++) {
+        if (board[i] == undefined) {
+            openSpots++;
         };
     }
     if (openSpots == 0){
         return 0;
-    } else {
-        return null;
+    } else if (openSpots !== 0) {
+        openSpots = 0;
     }
+        
+    return null;
+    
 };
 
 /*displays who the winner is*/
@@ -132,6 +135,7 @@ function bestMove() {
             board[i] = -1;
             let score = minimax(board, false);
             board[i] = undefined;
+            console.log(score)
             if (score > bestScore) {
                 bestScore = score;
                 move = i;
