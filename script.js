@@ -127,7 +127,7 @@ function updateTurn (piece) {
 
 function bestMove() {
 // AI to make its turn
-    let bestScore = -Infinity;
+    let bestScore = Infinity;
     let move;
     for (let i = 0; i < 9; i++) {
         // Is the spot available?
@@ -135,9 +135,9 @@ function bestMove() {
             board[i] = -1;
             let score = minimax(board, false);
             board[i] = undefined;
-            console.log(score)
-            if (score > bestScore) {
+            if (score < bestScore) {
                 bestScore = score;
+                console.log(score);
                 move = i;
             }
         }
@@ -153,26 +153,26 @@ function minimax(board, isMaximizing) {
     }
   
     if (isMaximizing) {
-        let bestScore = -Infinity;
+        let bestScore = Infinity;
         for (let i = 0; i < 9; i++) {
             // Is the spot available?
             if (board[i] == undefined) {
                 board[i] = -1;
                 let score = minimax(board, false);
                 board[i] = undefined;
-                bestScore = Math.max(score, bestScore);
+                bestScore = Math.min(score, bestScore);
             }
         }
         return bestScore;
     } else {
-        let bestScore = Infinity;
+        let bestScore = -Infinity;
         for (let i = 0; i < 9; i++) {
             // Is the spot available?
             if (board[i] == undefined) {
                 board[i] = 1;
                 let score = minimax(board, true);
                 board[i] = undefined;
-                bestScore = Math.min(score, bestScore);
+                bestScore = Math.max(score, bestScore);
             }
         }
         return bestScore;
