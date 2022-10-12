@@ -122,56 +122,59 @@ function updateTurn (piece) {
     };
 };
 
-function aiBestMove(aiBoard) {
-    let BestScore = -Infinity;
-    let BestMove;
-    let depth = 0;
+function bestMove() {
+// AI to make its turn
+    let bestScore = -Infinity;
+    let move;
     for (let i = 0; i < 9; i++) {
-        if(aiBoard[i] == undefined) {
-            aiBoard[i] = -1;
-            let score = miniMax(aiBoard, depth, false);
-            if (score > BestScore) {
-                BestScore = score;
-                BestMove = [i];
-            };
-        };
-    };
-    document.getElementById(BestMove).innerHTML = "O";
-    board[BestMove] = -1
-}
-
-function miniMax(aiBoard, depth, maximizingPlayer) {
-    
-    if (checkWin() !== null) {
-        let score = checkWin();
-        return score;
-    }
-
-    if (maximizingPlayer) {
-        let maxEval = -Infinity;
-        for (let i = 0; i < 9; i++) {
-            if(aiBoard[i] == undefined) {
-                aiBoard[i] = -1;
-                eval = miniMax(aiBoard, depth + 1, false);
-                aiBoard[i] = undefined;
-                maxEval = Math.max(maxEval, eval);
+        // Is the spot available?
+        if (board[i] == undefined) {
+            board[i] = -1;
+            let score = minimax(board, 0, false);
+            board[i] = undefined;
+            if (score > bestScore) {
+                bestScore = score;
+                move = i;
             }
         }
-        return maxEval;
+        
+    }
+    board[move] = -1;
+    document.getElementById(move).innerHTML = 'O'
+}
+function minimax(board, depth, isMaximizing) {
+    let result = checkWin();
+    if (result !== null) {
+        return result;
+    }
+  
+    if (isMaximizing) {
+        let bestScore = -Infinity;
+        for (let i = 0; i < 9; i++) {
+            // Is the spot available?
+            if (board[i] == undefined) {
+                board[i] = -1;
+                let score = minimax(board, depth + 1, false);
+                board[i] = undefined;
+                bestScore = Math.max(score, bestScore);
+            }
+        }
+        return bestScore;
     } else {
-        let minEval = Infinity;
+        let bestScore = Infinity;
         for (let i = 0; i < 9; i++) {
-            if(aiBoard[i] == undefined) {
-                aiBoard[i] = 1;
-                eval = miniMax(aiBoard, depth + 1, true)
-                minEval = Math.min(minEval, eval);
-                aiBoard[i] = undefined;
+            // Is the spot available?
+            if (board[i] == undefined) {
+                board[i] = 1;
+                let score = minimax(board, depth + 1, true);
+                board[i] = undefined;
+                bestScore = Math.min(score, bestScore);
             }
         }
-        return minEval;
+        return bestScore;
     }
-    
 }
+
 
 function playMove(x, i) {
     button = document.getElementById(i);
@@ -183,8 +186,7 @@ function playMove(x, i) {
 };
 
 function aiTurn(x) {
-    let aiBoard = [...board];
-    aiBestMove(aiBoard);
+    bestMove();
     checkWin();
     updateTurn(x);
 }
