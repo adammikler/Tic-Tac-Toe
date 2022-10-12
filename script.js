@@ -130,7 +130,7 @@ function bestMove() {
         // Is the spot available?
         if (board[i] == undefined) {
             board[i] = -1;
-            let score = minimax(board, 0, false);
+            let score = minimax(board, false);
             board[i] = undefined;
             if (score > bestScore) {
                 bestScore = score;
@@ -140,9 +140,9 @@ function bestMove() {
         
     }
     board[move] = -1;
-    document.getElementById(move).innerHTML = 'O'
+    document.getElementById(move).innerHTML = 'O';
 }
-function minimax(board, depth, isMaximizing) {
+function minimax(board, isMaximizing) {
     let result = checkWin();
     if (result !== null) {
         return result;
@@ -154,7 +154,7 @@ function minimax(board, depth, isMaximizing) {
             // Is the spot available?
             if (board[i] == undefined) {
                 board[i] = -1;
-                let score = minimax(board, depth + 1, false);
+                let score = minimax(board, false);
                 board[i] = undefined;
                 bestScore = Math.max(score, bestScore);
             }
@@ -166,7 +166,7 @@ function minimax(board, depth, isMaximizing) {
             // Is the spot available?
             if (board[i] == undefined) {
                 board[i] = 1;
-                let score = minimax(board, depth + 1, true);
+                let score = minimax(board, true);
                 board[i] = undefined;
                 bestScore = Math.min(score, bestScore);
             }
