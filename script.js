@@ -2,6 +2,23 @@
 
 let board = Array.apply(null, Array(9)); //Creates the Array to store moves
 
+/*updates the current player and highlights whos move it is*/
+function updateTurn (piece) {
+    if (piece.turn == 1) {
+       piece.turn = 0;
+
+       const active = document.querySelector('.active');
+       const notActive = document.querySelector('.not-active');
+
+       active.classList.replace('active', 'not-active');
+       notActive.classList.replace('not-active', 'active');
+    } else {
+        piece.turn = 1;
+    };
+};
+
+/*Takes an argument to know if it should run the functions if the game actually ended or
+if the Ai needs to calculate the move*/
 function checkWin(ai) {
     /*used to measure if a row or collumn combined makes a win*/
     const xwin = 3;
@@ -138,21 +155,7 @@ const Player = (piece, turn) => {
     return {piece, turn, makeMove};/*Object created*/
 };
 
-/*updates the current player and highlights whos move it is*/
-function updateTurn (piece) {
-    if (piece.turn == 1) {
-       piece.turn = 0;
-
-       const active = document.querySelector('.active');
-       const notActive = document.querySelector('.not-active');
-
-       active.classList.replace('active', 'not-active');
-       notActive.classList.replace('not-active', 'active');
-    } else {
-        piece.turn = 1;
-    };
-};
-
+//finds the AIs best move
 function bestMove() {
 // AI to make its turn
     let bestScore = Infinity;
@@ -173,6 +176,8 @@ function bestMove() {
     board[move] = -1;
     document.getElementById(move).innerHTML = 'O';
 }
+
+//gives each option a score based on the best move for X and best move for O
 function minimax(board, isMaximizing) {
     let result = checkWin(true);
     if (result !== null) {
@@ -206,6 +211,7 @@ function minimax(board, isMaximizing) {
     }
 }
 
+//waits for X to make the first move and swaps whos turn it is
 function playMove(x, i) {
     button = document.getElementById(i);
     x.makeMove(i, board);
@@ -215,12 +221,14 @@ function playMove(x, i) {
     aiTurn(x);
 };
 
+//runs the Ai turn and calculates its move
 function aiTurn(x) {
     bestMove();
     checkWin();
     updateTurn(x);
 }
 
+//controlls the game flow
 function Game() {
     const x = Player('x', 1);/*Creates human players */
     
