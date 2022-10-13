@@ -16,45 +16,97 @@ h2 {
     font-size: 2em;
 }
 
-.active {
-    border: 1px solid black;
+
+@media screen and (max-width: 600px) {
+    .active {
+        border: 1px solid black;
+    }
+
+    .turn {
+        margin-left: 15%;
+        width: 70%;
+        justify-content: space-between;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .turn h2 {
+        padding: 5%;
+    }
+
+    .winner {
+        width: 100%;
+        text-align: center;
+    }
+
+    .board {
+        width: 30vw;
+        height: 30vw;
+        margin-left: 20vw;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+    
+    .board div {
+        height: 20vw;
+        width: 20vw;
+        text-align: center;
+        display:inline-block;
+    }
+    
+    .board div button {
+        padding: 35%;
+        border: none;
+        background-color: white;
+        cursor: pointer;
+    }
 }
 
-.turn {
-    margin-left: 30%;
-    width: 40%;
-    justify-content: space-between;
-    display: flex;
-    flex-direction: row;
-}
-.turn h2 {
-    padding: 5%;
-}
-.winner {
-    margin-top: 0;
-    width: 100%;
-    text-align: center;
-}
-.board {
-    width: 30vw;
-    height: 30vw;
-    margin-left: 35vw;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-}
+@media screen and (min-width: 700px) {
+    .active {
+        border: 1px solid black;
+    }
 
-.board div {
-    height: 10vw;
-    width: 10vw;
-    text-align: center;
-}
+    .turn {
+        margin-left: 30%;
+        width: 40%;
+        justify-content: space-between;
+        display: flex;
+        flex-direction: row;
+    }
 
-.board div button {
-    padding: 45%;
-    border: none;
-    background-color: white;
-    cursor: pointer;
+    .turn h2 {
+        padding: 5%;
+    }
+
+    .winner {
+        width: 100%;
+        text-align: center;
+    }
+
+    .board {
+        width: 30vw;
+        height: 30vw;
+        margin-left: 35vw;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+    
+    .board div {
+        height: 10vw;
+        width: 10vw;
+        text-align: center;
+        display:inline-block;
+    }
+    
+    .board div button {
+        padding: 35%;
+        border: none;
+        background-color: white;
+        cursor: pointer;
+    }
 }
 
 /*Creates the board with boarders*/

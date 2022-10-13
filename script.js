@@ -2,53 +2,77 @@
 
 let board = Array.apply(null, Array(9)); //Creates the Array to store moves
 
-function checkWin() {
+function checkWin(ai) {
     /*used to measure if a row or collumn combined makes a win*/
     const xwin = 3;
     const owin = -3;
     /*checks for row wins*/
     for (let i = 0; i < 9; i+=3) {
         if(board[0 + i] + board [1 + i] + board[2 + i] == xwin) {
-            return xwin;
-            displayWinner('X wins');
-            delay(1000).then(() => clearBoard());
+            if(ai) {
+                return xwin;
+            } else {
+                displayWinner('X wins');
+                delay(1000).then(() => clearBoard());
+            }
         } else if (board[0 + i] + board [1 + i] + board[2 + i] == owin) {
-            return owin;
-            displayWinner('O wins');
-            delay(1000).then(() => clearBoard());
+            if (ai) {
+                return owin;
+            } else {
+                displayWinner('O wins');
+                delay(1000).then(() => clearBoard());
+            }           
         };
     };
 
     /*checks for collumn wins*/
     for (let i = 0; i < 3; i++) {
         if(board[0 + i] + board [3 + i] + board[6 + i] == xwin) {
-            return xwin;
-            displayWinner('X wins');
-            delay(1000).then(() => clearBoard());
+            if(ai) {
+                return xwin;
+            } else {
+                displayWinner('X wins');
+                delay(1000).then(() => clearBoard());
+            };
         } else if (board[0 + i] + board [3 + i] + board[6 + i] == owin) {
-            return owin;
-            displayWinner('O wins');
-            delay(1000).then(() => clearBoard());
+            if (ai) {
+                return owin;
+            } else {
+                displayWinner('O wins');
+                delay(1000).then(() => clearBoard());
+            }
         };
     };
 
     /*checks for diagonal wins*/
     if (board[0] + board[4 ] + board[8] == xwin) {
-        return xwin;
-        displayWinner('X wins');
-        delay(1000).then(() => clearBoard());
+        if(ai) {
+            return xwin;
+        } else {
+            displayWinner('X wins');
+            delay(1000).then(() => clearBoard());
+        };
     } else if (board[0] + board[4 ] + board[8] == owin) {
-        return owin;
-        displayWinner('O wins');
-        delay(1000).then(() => clearBoard());
+        if (ai) {
+            return owin;
+        } else {
+            displayWinner('O wins');
+            delay(1000).then(() => clearBoard());
+        }
     } else if (board[2] + board[4 ] + board[6] == xwin) {
-        return xwin;
-        displayWinner('X wins');
-        delay(1000).then(() => clearBoard());
+        if(ai) {
+            return xwin;
+        } else {
+            displayWinner('X wins');
+            delay(1000).then(() => clearBoard());
+        };
     } else if (board[2] + board[4 ] + board[6] == owin) {
-        return owin;
-        displayWinner('O wins');
-        delay(1000).then(() => clearBoard());
+        if (ai) {
+            return owin;
+        } else {
+            displayWinner('O wins');
+            delay(1000).then(() => clearBoard());
+        };
     };
     let openSpots = 0;
     for (let i = 0; i < 9; i++) {
@@ -57,7 +81,12 @@ function checkWin() {
         };
     }
     if (openSpots == 0){
-        return 0;
+        if (ai) {
+            return 0;
+        } else {
+            displayWinner('Tie');
+            delay(1000).then(() => clearBoard());
+        };
     } else if (openSpots !== 0) {
         openSpots = 0;
     }
@@ -77,7 +106,7 @@ function delay(time) {
 }
 
 /*Clears the board and array*/
-function clearBoard (board) {
+function clearBoard () {
     //clears winner tag
     document.getElementById('winner').innerHTML = '';
     let button = document.getElementById(0);
@@ -95,7 +124,6 @@ function clearBoard (board) {
     //resets the board
     board.length = 0;
 };
-
 
 /*Creates the player objects with there abilites*/
 const Player = (piece, turn) => {
@@ -137,7 +165,6 @@ function bestMove() {
             board[i] = undefined;
             if (score < bestScore) {
                 bestScore = score;
-                console.log(score);
                 move = i;
             }
         }
@@ -147,7 +174,7 @@ function bestMove() {
     document.getElementById(move).innerHTML = 'O';
 }
 function minimax(board, isMaximizing) {
-    let result = checkWin();
+    let result = checkWin(true);
     if (result !== null) {
         return result;
     }
@@ -178,7 +205,6 @@ function minimax(board, isMaximizing) {
         return bestScore;
     }
 }
-
 
 function playMove(x, i) {
     button = document.getElementById(i);
